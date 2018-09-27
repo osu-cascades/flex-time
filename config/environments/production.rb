@@ -37,11 +37,11 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "falcon_time_#{Rails.env}"
+  # config.active_job.queue_name_prefix = "mountain_time_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: 'falcontime.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'mountaintime.herokuapp.com' }
 
   config.i18n.fallbacks = true
 

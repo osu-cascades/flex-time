@@ -5,11 +5,11 @@ default: &default
 
 development:
   <<: *default
-  database: falcon_time_development
+  database: mountain_time_development
 
 test:
   <<: *default
-  database: falcon_time_test
+  database: mountain_time_test
 
 production:
   url: <%= ENV.fetch('DATABASE_URL') { '' } %>

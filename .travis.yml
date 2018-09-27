@@ -13,7 +13,7 @@ install:
 bundler_args: --without production
 
 before_script:
-  - psql -c 'create database falcon_time_test;' -U postgres
+  - psql -c 'create database mountain_time_test;' -U postgres
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
@@ -23,7 +23,7 @@ after_script:
 
 test:
   adapter: postgresql
-  database: falcon_time_test
+  database: mountain_time_test
 
 env:
   global:
