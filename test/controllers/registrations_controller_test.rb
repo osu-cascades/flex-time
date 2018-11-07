@@ -78,4 +78,20 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_match /was removed from/, flash[:notice]
   end
 
+  test 'redirects when activity no longer exists' do
+    student = users(:student)
+    sign_in student
+    post student_registrations_path(student, params: {registration: {activity_id: '0'}})
+    assert_redirected_to student_path(student)
+    assert_match /choose a different activity/, flash[:alert]
+  end
+
+  test 'redirects when the registration no longer exists' do
+    sign_in users(:staff)
+    registration = registrations(:by_student)
+    get edit_student_registration_path(registration.student, id: 'fake')
+    assert_redirected_to student_path(registration.student)
+    assert_match /registration seems to have been deleted/, flash[:alert]
+  end
+
 end
