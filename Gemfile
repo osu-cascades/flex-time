@@ -17,9 +17,10 @@ gem 'bootstrap', '>= 4.3.1'
 gem 'jquery-rails'
 gem 'haml'
 gem 'haml-rails'
-gem 'devise', '~> 4.4.3'
-gem 'omniauth'
-gem 'omniauth-google-oauth2'
+gem 'devise', '~> 4.6.2'
+gem 'omniauth', '~> 1.9.0'
+gem 'omniauth-google-oauth2', '~> 0.7.0'
+gem 'omniauth-rails_csrf_protection'
 
 # Rails 5.2.1
 # gem 'mini_racer', platforms: :ruby
