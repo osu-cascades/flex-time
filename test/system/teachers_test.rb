@@ -25,6 +25,7 @@ class TeachersTest < ApplicationSystemTestCase
     refute_link 'Edit'
     refute_link 'Delete'
     refute_link 'Deactivate', exact: true
+    refute_link 'Reset student rosters'
   end
 
   test 'staff do not see creation form' do
@@ -108,32 +109,55 @@ class TeachersTest < ApplicationSystemTestCase
     assert_text 'Name has already been taken'
   end
 
+  # Clearing the student roster
+
+  test 'admin clears all student rosters' do
+    sign_in users(:admin)
+    visit teachers_url
+    assert_text '2 students'
+    click_link 'Reset student rosters'
+    assert_text 'All students have been removed from teacher rosters'
+    refute_text '2 students'
+    assert_text '0 students'
+  end
+
   # Deactivating
 
-  # https://github.com/osu-cascades/falcon-time/issues/39
   test 'admin deactivates a teacher' do
     sign_in users(:admin)
     visit teachers_url
-    # See teachers_controller_test.rb. Avoiding this here since the deactivate
-    # link uses js to display a confirmation dialog. (slow test)
-    # accept_confirm do
-    #   first('.list-group-item').click_link('Deactivate')
-    # end
-    # assert_text 'Fake was successfully deactivated'
+    first('.list-group-item').click_link('Deactivate')
+    assert_text 'Teacher was successfully deactivated'
   end
 
   # Deleting
 
   test 'admin deletes a teacher with no students nor registrations' do
-    skip
+    sign_in users(:admin)
+    visit teachers_url
+    first('.list-group-item').click_link('Delete')
+    assert_text 'was successfully deleted'
   end
 
-  test 'admin sees an error when deleting a teacher with students' do
-    skip
+  test 'admin does not see a delete link for a teacher with students' do
+    sign_in users(:admin)
+    User.student.first.update_attribute(:teacher_id, teachers(:mr_fake).id)
+    refute_empty teachers(:mr_fake).students
+    assert_empty teachers(:mr_fake).registrations
+    visit teachers_url
+    within "#teacher_#{teachers(:mr_fake).id}" do
+      refute_link 'Delete'
+    end
   end
 
-  test 'admin sees an error when deleting a teacher with registrations' do
-    skip
+  test 'admin does not see a delete link for a teacher with registrations' do
+    sign_in users(:admin)
+    visit teachers_url
+    assert_empty teachers(:mr_valid).students
+    refute_empty teachers(:mr_valid).registrations
+    within "#teacher_#{teachers(:mr_valid).id}" do
+      refute_link 'Delete'
+    end
   end
 
 end
